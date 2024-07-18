@@ -61,35 +61,46 @@
     showResult = true;
   }
 
+  //   add keyboard listener for enter key and check guess on enter
+  const handleKeydown = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      checkGuess();
+    }
+  };
   onMount(() => {
     generateSentence();
+    window.addEventListener("keydown", handleKeydown);
   });
 </script>
 
-<main class="container mx-auto p-4 font-mono">
-  <h1 class="text-2xl font-bold mb-4">ROT13 Guessing Game</h1>
-  <!-- radio button for toggling between encoding and decoding -->
-  <div class="mb-4 flex flex-col">
-    <label for="encoding" class="flex gap-2">
-      <input
-        type="radio"
-        id="encoding"
-        bind:group={isPracticingEncoding}
-        value={true}
-        onchange={() => toggleMode(true)}
-      />Encoding</label
-    >
+<main class="container mx-auto p-4 font-mono max-w-[700px]">
+  <div class="flex gap-8 justify-between">
+    <h1 class="text-3xl font-bold mb-4">the rot13 dojo</h1>
+    <!-- radio button for toggling between encoding and decoding -->
+    <div class="mb-4 flex flex-col text-sm text-slate-500">
+      <label for="encoding" class="flex gap-2">
+        <input
+          type="radio"
+          id="encoding"
+          bind:group={isPracticingEncoding}
+          value={true}
+          onchange={() => toggleMode(true)}
+        />Encoding</label
+      >
 
-    <label for="decoding" class="flex gap-2">
-      <input
-        type="radio"
-        id="decoding"
-        bind:group={isPracticingEncoding}
-        value={false}
-        onchange={() => toggleMode(false)}
-      />Decoding</label
-    >
+      <label for="decoding" class="flex gap-2">
+        <input
+          type="radio"
+          id="decoding"
+          bind:group={isPracticingEncoding}
+          value={false}
+          onchange={() => toggleMode(false)}
+        />Decoding</label
+      >
+    </div>
   </div>
+
   <div class="mb-4">
     <p class="font-semibold">Encoded sentence:</p>
     <p class="bg-gray-100 p-2 rounded">{encodedSentence}</p>
