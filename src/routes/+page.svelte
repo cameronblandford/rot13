@@ -6,6 +6,7 @@
   let userGuess = $state("");
   let accuracy = $state(0);
   let showResult = $state(false);
+  let isPracticingEncoding = $state(false);
 
   // Function to encode/decode ROT13
   function rot13(str: string) {
@@ -17,6 +18,12 @@
     });
   }
 
+  const toggleMode = (val: boolean) => {
+    isPracticingEncoding = val;
+    userGuess = "";
+    showResult = false;
+    generateSentence();
+  };
   // Function to calculate accuracy
   function calculateAccuracy(original: string, guess: string) {
     let correct = 0;
@@ -35,14 +42,18 @@
   }
 
   // Function to generate a random sentence
-  async function generateSentence() {
+  const generateSentence = async () => {
     const response = await fetch("https://api.quotable.io/random");
     const data = await response.json();
-    sentence = data.content;
+    if (isPracticingEncoding) {
+      sentence = rot13(data.content);
+    } else {
+      sentence = data.content;
+    }
     encodedSentence = rot13(sentence);
     userGuess = "";
     showResult = false;
-  }
+  };
 
   // Function to check the user's guess
   function checkGuess() {
@@ -55,9 +66,30 @@
   });
 </script>
 
-<main class="container mx-auto p-4">
+<main class="container mx-auto p-4 font-mono">
   <h1 class="text-2xl font-bold mb-4">ROT13 Guessing Game</h1>
+  <!-- radio button for toggling between encoding and decoding -->
+  <div class="mb-4 flex flex-col">
+    <label for="encoding" class="flex gap-2">
+      <input
+        type="radio"
+        id="encoding"
+        bind:group={isPracticingEncoding}
+        value={true}
+        onchange={() => toggleMode(true)}
+      />Encoding</label
+    >
 
+    <label for="decoding" class="flex gap-2">
+      <input
+        type="radio"
+        id="decoding"
+        bind:group={isPracticingEncoding}
+        value={false}
+        onchange={() => toggleMode(false)}
+      />Decoding</label
+    >
+  </div>
   <div class="mb-4">
     <p class="font-semibold">Encoded sentence:</p>
     <p class="bg-gray-100 p-2 rounded">{encodedSentence}</p>
@@ -73,12 +105,7 @@
     ></textarea>
   </div>
 
-  <button
-    onclick={checkGuess}
-    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-  >
-    Check Guess
-  </button>
+  <button onclick={checkGuess} class="btn"> Check Guess </button>
 
   {#if showResult}
     <div class="mt-4">
@@ -88,16 +115,11 @@
     </div>
   {/if}
 
-  <button
-    onclick={generateSentence}
-    class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-  >
-    New Sentence
-  </button>
+  <button onclick={generateSentence} class="btn"> New Sentence </button>
 </main>
 
-<style>
-  :global(body) {
-    font-family: Arial, sans-serif;
+<style lang="postcss">
+  .btn {
+    @apply border px-4 py-2 hover:bg-gray-100 rounded;
   }
 </style>
