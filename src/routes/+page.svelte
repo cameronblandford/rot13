@@ -74,59 +74,70 @@
   });
 </script>
 
-<main class="container mx-auto p-4 font-mono max-w-[700px]">
-  <div class="flex gap-8 justify-between">
-    <h1 class="text-3xl font-bold mb-4">the rot13 dojo</h1>
-    <!-- radio button for toggling between encoding and decoding -->
-    <div class="mb-4 flex flex-col text-sm text-slate-500">
-      <label for="encoding" class="flex gap-2">
-        <input
-          type="radio"
-          id="encoding"
-          bind:group={isPracticingEncoding}
-          value={true}
-          onchange={() => toggleMode(true)}
-        />Encoding</label
-      >
+<main
+  class="container mx-auto p-4 font-mono max-w-[700px] min-h-screen flex flex-col"
+>
+  <div class="grow">
+    <div class="flex gap-8 justify-between">
+      <h1 class="text-3xl font-bold mb-4">the rot13 dojo</h1>
+      <!-- radio button for toggling between encoding and decoding -->
+      <div class="mb-4 flex flex-col text-sm text-slate-500">
+        <label for="encoding" class="flex gap-2">
+          <input
+            type="radio"
+            id="encoding"
+            bind:group={isPracticingEncoding}
+            value={true}
+            onchange={() => toggleMode(true)}
+          />Encoding</label
+        >
 
-      <label for="decoding" class="flex gap-2">
-        <input
-          type="radio"
-          id="decoding"
-          bind:group={isPracticingEncoding}
-          value={false}
-          onchange={() => toggleMode(false)}
-        />Decoding</label
-      >
+        <label for="decoding" class="flex gap-2">
+          <input
+            type="radio"
+            id="decoding"
+            bind:group={isPracticingEncoding}
+            value={false}
+            onchange={() => toggleMode(false)}
+          />Decoding</label
+        >
+      </div>
     </div>
-  </div>
 
-  <div class="mb-4">
-    <p class="font-semibold">Encoded sentence:</p>
-    <p class="bg-gray-100 p-2 rounded">{encodedSentence}</p>
-  </div>
-
-  <div class="mb-4">
-    <label for="guess" class="block font-semibold">Your guess:</label>
-    <textarea
-      id="guess"
-      bind:value={userGuess}
-      class="w-full p-2 border rounded"
-      rows="3"
-    ></textarea>
-  </div>
-
-  <button onclick={checkGuess} class="btn"> Check Guess </button>
-
-  {#if showResult}
-    <div class="mt-4">
-      <p class="font-semibold">Original sentence:</p>
-      <p class="bg-gray-100 p-2 rounded">{sentence}</p>
-      <p class="mt-2">Your accuracy: {accuracy}%</p>
+    <div class="mb-4">
+      <p class="font-semibold">Encoded sentence:</p>
+      <p class="bg-gray-100 p-2 rounded">{encodedSentence}</p>
     </div>
-  {/if}
 
-  <button onclick={generateSentence} class="btn"> New Sentence </button>
+    <div class="mb-4">
+      <label for="guess" class="block font-semibold">Your guess:</label>
+      <textarea
+        id="guess"
+        bind:value={userGuess}
+        class="w-full p-2 border rounded"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <button onclick={checkGuess} class="btn"> Check Guess </button>
+    <button onclick={generateSentence} class="btn"> New Sentence </button>
+    {#if showResult}
+      <div class="mt-4">
+        <p class="font-semibold">Original sentence:</p>
+        <p class="bg-gray-100 p-2 rounded">{sentence}</p>
+        <p class="mt-2">Your accuracy: {accuracy}%</p>
+      </div>
+    {/if}
+  </div>
+  <div class="text-xs text-slate-500 mt-4">
+    for feature suggestions or feedback, dm me on <a
+      href="https://bsky.app/profile/cam.fyi"
+      target="_blank"
+      class="underline hover:font-bold"
+    >
+      bsky
+    </a>
+  </div>
 </main>
 
 <style lang="postcss">
