@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-
+  import quoteData from "$lib/quotes.json";
   let sentence = $state("");
   let encodedSentence = $state("");
   let userGuess = $state("");
@@ -41,14 +41,21 @@
     return Math.round((correct / originalWords.length) * 100);
   }
 
+  const getQuote = () => {
+    const quote =
+      quoteData.quotes[Math.floor(Math.random() * quoteData.quotes.length)];
+    return quote.Quote;
+  };
+
   // Function to generate a random sentence
   const generateSentence = async () => {
-    const response = await fetch("https://api.quotable.io/random");
-    const data = await response.json();
+    // const response = await fetch("https://api.quotable.io/random");
+    // const data = await response.json();
+    const quote = getQuote();
     if (isPracticingEncoding) {
-      sentence = rot13(data.content);
+      sentence = rot13(quote);
     } else {
-      sentence = data.content;
+      sentence = quote;
     }
     encodedSentence = rot13(sentence);
     userGuess = "";
